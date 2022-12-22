@@ -3,8 +3,10 @@ from pathlib import Path
 
 import typer
 
+from todo import __app_name__
+
 from todo import (
-    DB_WRITE_ERROR, DIR_ERROR, FILE_ERROR, SUCCESS, __app_name_
+    DB_WRITE_ERROR, DIR_ERROR, FILE_ERROR, SUCCESS, __app_name__
 )
 
 CONFIG_DIR_PATH = Path(typer.get_app_dir(__app_name__))
