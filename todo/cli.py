@@ -1,11 +1,11 @@
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 import typer
 
-from todo import ERRORS, __version__, config, database
-from todo import __app_name__
-from todo import __app_name__, __version__, database, ERRORS, config
+from todo import (
+    ERRORS, __app_name__, __version__, config, database, todo
+)
 
 app = typer.Typer()
 
@@ -35,6 +35,24 @@ def init(
         raise typer.Exit(1)
     else:
         typer.secho(f"The to-do database is {db_path}", fg=typer.colors.GREEN)
+
+def get_todoer() -> todo.Todoer:
+    if config.CONFIG_FILE_PATH.exists():
+        db_path = database.get_database_path(config.CONFIG_FILE_PATH)
+    else:
+        typer.secho(
+            'Config file not found. Please, run "todo init"',
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
+    if db_path.exists():
+        return todo.Todoer(db_path)
+    else:
+        typer.secho(
+            'Database not found. Please, run "todo init"',
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
 
 def _version_callback(value: bool) -> None:
     if value:
